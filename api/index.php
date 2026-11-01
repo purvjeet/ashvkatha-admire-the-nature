@@ -59,3 +59,4 @@ if ($target && file_exists($target)) {
         echo "<h1 style='text-align:center;margin-top:20%;font-family:sans-serif;'>404 - Page Not Found</h1>";
     }
 }
+

@@ -566,6 +566,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function crossFadeVideos() {
         if (isFading) return;
+        if (typeof window.isHeroVideoUserPaused === 'function' && window.isHeroVideoUserPaused()) {
+            return;
+        }
         isFading = true;
 
         nextVid.currentTime = 0;
@@ -590,7 +593,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (playPromise !== undefined) {
             playPromise.then(doTransition).catch(() => {
                 isFading = false;
-                try { currentVid.play(); } catch(e) {}
+                try { 
+                    if (!window.isHeroVideoUserPaused || !window.isHeroVideoUserPaused()) {
+                        currentVid.play(); 
+                    }
+                } catch(e) {}
             });
         } else {
             doTransition();
@@ -600,12 +607,18 @@ document.addEventListener('DOMContentLoaded', function() {
     [v1, v2].forEach(function(videoEl) {
         // Trigger smooth fade 0.6 seconds before the video ends
         videoEl.addEventListener('timeupdate', function() {
+            if (typeof window.isHeroVideoUserPaused === 'function' && window.isHeroVideoUserPaused()) {
+                return;
+            }
             if (this === currentVid && this.duration && (this.currentTime >= this.duration - 0.6)) {
                 crossFadeVideos();
             }
         });
         // Fallback for ended event
         videoEl.addEventListener('ended', function() {
+            if (typeof window.isHeroVideoUserPaused === 'function' && window.isHeroVideoUserPaused()) {
+                return;
+            }
             if (this === currentVid) {
                 crossFadeVideos();
             }
@@ -613,13 +626,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Ensure first video plays on load
-    v1.play().catch(function() {
-        // Fallback for strict browser autoplay policies
-        window.addEventListener('click', function unlockAutoplay() {
-            v1.play().catch(function() {});
-            window.removeEventListener('click', unlockAutoplay);
-        }, { once: true });
-    });
+    if (!window.isHeroVideoUserPaused || !window.isHeroVideoUserPaused()) {
+        v1.play().catch(function() {
+            // Fallback for strict browser autoplay policies
+            window.addEventListener('click', function unlockAutoplay() {
+                if (!window.isHeroVideoUserPaused || !window.isHeroVideoUserPaused()) {
+                    v1.play().catch(function() {});
+                }
+                window.removeEventListener('click', unlockAutoplay);
+            }, { once: true });
+        });
+    }
 });
 </script>
 

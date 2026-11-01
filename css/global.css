@@ -348,6 +348,7 @@ p {
   width: 20px;
   height: 20px;
   fill: currentColor;
+  pointer-events: none;
 }
 
 /* Hide video button on pages that do not have hero video */

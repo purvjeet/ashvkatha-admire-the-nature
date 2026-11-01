@@ -54,28 +54,58 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ------------------------------------------------------------
      2. Hero Video Play / Pause Control
      ------------------------------------------------------------ */
-  const heroVideo = document.getElementById('hero-bg-video');
   const videoBtn = document.getElementById('video-toggle-btn');
   const videoPauseIcon = document.getElementById('video-icon-pause');
   const videoPlayIcon = document.getElementById('video-icon-play');
+  const heroVideos = document.querySelectorAll('video.bg-video, #hero-bg-video-1, #hero-bg-video-2');
 
-  if (heroVideo && videoBtn) {
-    videoBtn.addEventListener('click', () => {
-      if (heroVideo.paused) {
-        heroVideo.play();
-        if (videoPauseIcon && videoPlayIcon) {
-          videoPauseIcon.style.display = 'block';
-          videoPlayIcon.style.display = 'none';
-        }
-        videoBtn.setAttribute('title', 'Pause Video');
-      } else {
-        heroVideo.pause();
-        if (videoPauseIcon && videoPlayIcon) {
-          videoPauseIcon.style.display = 'none';
-          videoPlayIcon.style.display = 'block';
-        }
-        videoBtn.setAttribute('title', 'Play Video');
+  if (videoBtn && heroVideos.length) {
+    let isUserPaused = false;
+
+    // Expose state globally so index.php crossFade loop respects user pause
+    window.isHeroVideoUserPaused = () => isUserPaused;
+
+    const setPauseUI = (paused) => {
+      if (videoPauseIcon && videoPlayIcon) {
+        videoPauseIcon.style.display = paused ? 'none' : 'block';
+        videoPlayIcon.style.display = paused ? 'block' : 'none';
       }
+      videoBtn.setAttribute('title', paused ? 'Play Video' : 'Pause Video');
+      videoBtn.setAttribute('aria-label', paused ? 'Play Hero Video' : 'Pause Hero Video');
+    };
+
+    videoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      isUserPaused = !isUserPaused;
+
+      heroVideos.forEach(v => {
+        if (isUserPaused) {
+          try { v.pause(); } catch(err) {}
+        } else {
+          // If unpausing, resume the active video
+          if (v.classList.contains('video-active') || heroVideos.length === 1) {
+            v.play().catch(() => {});
+          }
+        }
+      });
+
+      setPauseUI(isUserPaused);
+    });
+
+    // Synchronize UI if video state changes externally
+    heroVideos.forEach(v => {
+      v.addEventListener('pause', () => {
+        const anyPlaying = Array.from(heroVideos).some(vid => !vid.paused && vid.classList.contains('video-active'));
+        if (!anyPlaying) {
+          setPauseUI(true);
+        }
+      });
+      v.addEventListener('play', () => {
+        if (v.classList.contains('video-active')) {
+          isUserPaused = false;
+          setPauseUI(false);
+        }
+      });
     });
   }
 
