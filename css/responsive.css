@@ -1,0 +1,189 @@
+/* ============================================================
+   Ashvkatha – Admire the Nature
+   Responsive Stylesheet
+   ============================================================ */
+
+/* Mobile Nav Drawer Styles */
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(8, 24, 19, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 10000;
+  display: flex;
+  justify-content: flex-start;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.mobile-nav-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav-dialog {
+  width: 100%;
+  max-width: 360px;
+  height: 100%;
+  background: #11212d;
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow-y: auto;
+  border-right: 1px solid rgba(74, 92, 108, 0.45);
+  border-left: none;
+}
+
+.mobile-nav-overlay.open .mobile-nav-dialog {
+  transform: translateX(0);
+}
+
+.mobile-nav-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.mobile-close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mobile-nav-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mobile-nav-links a {
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  text-decoration: none;
+  transition: color 0.2s;
+  display: block;
+}
+
+.mobile-nav-links a:hover, .mobile-nav-links a.active {
+  color: var(--warm-gold);
+}
+
+.mobile-btn-highlight {
+  display: inline-block;
+  padding: 10px 24px;
+  background: var(--warm-gold) !important;
+  color: var(--forest-deep) !important;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  margin-top: 10px;
+}
+
+.mobile-nav-footer {
+  margin-top: auto;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+.mobile-nav-footer a {
+  color: var(--warm-gold);
+  text-decoration: none;
+}
+
+/* Screen Size Breakpoints */
+@media (max-width: 1024px) {
+  .nav-pill {
+    padding: 8px 24px;
+    gap: 16px;
+  }
+  .nav-link {
+    font-size: 0.85rem;
+  }
+  .healing-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .room-details-layout {
+    grid-template-columns: 1fr;
+  }
+  .booking-checkout-layout {
+    grid-template-columns: 1fr;
+  }
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 860px) {
+  .nav-corner-container,
+  .nav-corner-left {
+    top: 18px;
+    left: 18px;
+    right: auto;
+  }
+  .nav-header-container {
+    left: calc(18px + 54px + 12px);
+    transform: none;
+    top: 18px;
+  }
+  .nav-pill {
+    padding: 0 16px;
+    gap: 0;
+    height: 54px;
+  }
+  .nav-pill .nav-link {
+    display: none;
+  }
+  .hero-wrapper {
+    padding: 120px 6% 60px;
+  }
+  .booking-search-form {
+    grid-template-columns: 1fr;
+  }
+  .room-specs-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  .get-in-touch-overlay-card {
+    position: static;
+    max-width: 100%;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 1.65rem;
+    line-height: 1.25;
+  }
+  .room-gallery-thumbs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .room-card-actions {
+    flex-direction: column;
+  }
+  .auth-card {
+    padding: 32px 20px;
+  }
+}

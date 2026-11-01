@@ -1,0 +1,19 @@
+# Ashvkatha - Admire the Nature (.gitignore)
+
+# Temporary scratch & debug directory
+scratch/*
+!scratch/.gitkeep
+
+# Operating system metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor configs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Runtime logs
+*.log
